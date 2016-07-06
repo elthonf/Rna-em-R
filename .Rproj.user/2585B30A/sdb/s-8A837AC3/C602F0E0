@@ -1,0 +1,18 @@
+{
+    "contents" : "emf.rna.backward2 <- function (\n    rna,\n    padrao, #Registro, de 1 a N\n    alpha = 0.1,\n    camada1 = TRUE,\n    camada2 = TRUE\n)\n{\n    En = E[padrao];\n\n    Z = cbind(1, rna$Z);\n    X = cbind(1, rna$X);\n    A = cbind(rna$A0, rna$A);\n    B = cbind(rna$B0, rna$B);\n\n    dEdb = matrix(data=0, nrow = rna$info$qtOut, ncol = rna$info$qtHid+1);\n    bnew = matrix(nrow = rna$info$qtOut, ncol = rna$info$qtHid+1);\n\n    for(h in 1:(rna$info$qtHid+1)){\n        for(o in 1:rna$info$qtOut){\n            dEdb[o,h] = E[padrao] * rna$func2der(rna$Yin[padrao,,drop = FALSE]) * Z[h];\n            bnew[o,h] = B[o,h] - alpha * dEdb[o,h];\n        }\n    }\n\n    dEda = matrix(data=0, nrow = rna$info$qtHid, ncol = rna$info$qtIn);\n    anew = matrix(nrow = rna$info$qtHid, ncol = rna$info$qtIn);\n\n    for(i in 1:(rna$info$qtIn+1)){\n        for(h in 1:rna$info$qtHid){\n            dEda[h,i] = sum(E[padrao] * rna$func2der(rna$Yin[padrao,,drop = FALSE]) * rna$B[,h, drop = FALSE])\n                * rna$func1der(rna$Zin[padrao,h,drop=FALSE]) * X[padrao,i];\n            anew[h,i] = A[h,i] - alpha * dEda[h,i];\n        }\n    }\n\n    #3 Atualiza A e B\n    if(camada2){\n        rna$B0 = matrix( bnew[,1], nrow = nrow(bnew) );\n        rna$B  = matrix( bnew[,2:dim(bnew)[2]], nrow = nrow(bnew) );\n    }\n    if(camada1){\n        rna$A0 = matrix( anew[,1], nrow = nrow(anew) );\n        rna$A  = matrix( anew[,2:dim(anew)[2]], nrow = nrow(anew) );\n    }\n    return ( rna );\n}\n",
+    "created" : 1467758042354.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "708690322",
+    "id" : "C602F0E0",
+    "lastKnownWriteTime" : 1467766130,
+    "path" : "~/Documents/RProjects/emf.rna/R/emf.rna.backward2.R",
+    "project_path" : "R/emf.rna.backward2.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

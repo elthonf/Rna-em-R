@@ -1,0 +1,18 @@
+{
+    "contents" : "emf.rna.backward.padrao <- function (\n    rna,\n    registro,\n    alpha = 1,\n    camada1 = TRUE,\n    camada2 = TRUE\n)\n{\n    #1 - Processa B (camada 1)\n    e = rna$e[registro, , drop = FALSE]\n    fd2 = rna$func2der(rna$Yin[registro, , drop = FALSE])\n    temp = e * fd2\n    z =  cbind(1, rna$Z[registro, , drop = FALSE])\n\n    dEdb = t(temp) %*% z * ( 1/ dim(z)[1]);\n    bnew = cbind( rna$B0, rna$B ) - alpha * dEdb;\n\n    #Para testar, método 1 a 1!\n    #     dEdb2 = t(temp) %*% z * ( 1/ dim(z)[1]);\n    #     for(k in 1:dim(rna$B)[1]){\n    #         for(i in 1:dim(z)[2]){\n    #             soma = 0;\n    #             for(n in 1:dim(z)[1]){\n    #                 soma = soma + e[n,k] * rna$func2der(rna$Yin[n,k]) * z[n,i]\n    #             }\n    #             dEdb2[k,i] =  ( 1/ dim(z)[1]) * soma;\n    #         }\n    #     }\n\n\n    #2 - Processa A\n    x = cbind(1, rna$X[registro, , drop = FALSE])\n    dEda2 = matrix(NA, nrow = dim(rna$A)[1], ncol = dim(x)[2])\n    temp2 = temp %*% rna$B\n    temp2 = temp2 * rna$func1der( rna$Zin[registro, , drop = FALSE] )\n    dEda = t(temp2) %*% x * ( 1/ dim(z)[1]);\n    anew = cbind( rna$A0, rna$A ) - alpha * dEda;\n\n\n\n    #     dEda2 = dEda;\n    #     for(i in 1:dim(rna$A)[1]){\n    #         for(j in 1:dim(x)[2]){\n    #             for(k in 1:dim(rna$B)[1]){\n    #\n    #             }\n    #             soma = 0;\n    #             for(n in 1:dim(x)[1]){\n    #                 soma = soma + e[n,k] * rna$func2der(rna$Yin[n,k]) * z[n,i]\n    #             }\n    #             dEdb2[k,i] =  ( 1/ dim(z)[1]) * soma;\n    #         }\n    #     }\n\n\n\n    #3 Atualiza A e B\n    if(camada2){\n        rna$B0 = matrix( bnew[,1], nrow = nrow(bnew) );\n        rna$B  = matrix( bnew[,2:dim(bnew)[2]], nrow = nrow(bnew) );\n    }\n    if(camada1){\n        rna$A0 = matrix( anew[,1], nrow = nrow(anew) );\n        rna$A  = matrix( anew[,2:dim(anew)[2]], nrow = nrow(anew) );\n    }\n    return ( rna );\n}\n",
+    "created" : 1467664268113.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2572443854",
+    "id" : "E82FD720",
+    "lastKnownWriteTime" : 1467670612,
+    "path" : "~/Documents/RProjects/emf.rna/R/emf.rna.backward.padrao.R",
+    "project_path" : "R/emf.rna.backward.padrao.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

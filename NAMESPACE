@@ -1,0 +1,22 @@
+exportPattern("^[[:alpha:]]+")
+
+export(
+    emf.rna.forward,
+    emf.rna.backward,
+    emf.rna.backward.padrao,
+
+    emf.rna.read.csv.files,
+    emf.rna.generate.info,
+
+    emf.rna.func.sigmoid,
+    emf.rna.func.sigmoid.der,
+    emf.rna.func.perceptron,
+    emf.rna.func.perceptron.der,
+    emf.rna.func.tunnel,
+    emf.rna.func.tunnel.der,
+    emf.rna.func.tanh,
+    emf.rna.func.tanh.der,
+
+    emf.rna.image.plot
+
+)
