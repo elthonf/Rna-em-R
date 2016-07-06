@@ -7,13 +7,15 @@ emf.rna.read.csv.files <- function(
     YD = NULL, yfile = NULL,
     A = NULL, afile = NULL, B = NULL, bfile = NULL,
 
-    func1 = emf.rna.func.sigmoid, func1der = emf.rna.func.sigmoid.der,
-    func2 = emf.rna.func.sigmoid, func2der = emf.rna.func.sigmoid.der
+    func1 = emf.rna.func.tanh, func1der = emf.rna.func.tanh.der,
+    func2 = emf.rna.func.tanh, func2der = emf.rna.func.tanh.der,
+    cenario = "Genérico"
 )
 {
     #Define a rede
     rede = list()
     rede$info = list();
+    rede$cenario = cenario;
     rede$info$qtIn = qtIn                      #Quantidade de entradas (X)
     rede$info$qtHid = qtHid                    #Quantidade na camada escondida (Z)
     rede$info$qtOut = qtOut                    #Quantidade de saídas (Y)
@@ -31,7 +33,6 @@ emf.rna.read.csv.files <- function(
         rede$X = data.matrix(rede$X);
         dimnames(rede$X) <- NULL;
     }
-    rede$info$records = dim(rede$X)[1]         #Quantidade de registros
 
     if(!is.null(YD)){ #Seta YD direto
         if(!is.matrix(YD))

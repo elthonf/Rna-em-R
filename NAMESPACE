@@ -6,7 +6,6 @@ export(
     emf.rna.backward2,
 
     emf.rna.read.csv.files,
-    emf.rna.generate.info,
 
     emf.rna.func.sigmoid,
     emf.rna.func.sigmoid.der,
