@@ -4,15 +4,17 @@ netXOR = emf.rna.read.csv.files( qtIn = 2, qtHid = 2, qtOut = 1,
                                  xfile = "dados/XORx.csv", yfile = "dados/XORy.csv",
                                  func1 = emf.rna.func.tanh, func2 = emf.rna.func.tanh, func1der = emf.rna.func.tanh.der, func2der = emf.rna.func.tanh.der )
 
-
+#Executa o primeiro Forward
 netXOR1 = emf.rna.forward( netXOR )
 
+#Prepara objeto para excucao em batelada, e executa.
 netXOR1batelada = netXOR1
 for( i in 1:1000 ){
     netXOR1batelada = emf.rna.backward( rna = netXOR1batelada, alpha = 0.5);
     print(netXOR1batelada$ET)
 }
 
+#Prepara objeto para execucao padrão a padrão, e executa.
 netXOR1padrao = netXOR1
 for( i in 1:1000 ){
     for( n in 1:netXOR1padrao$info$records){
@@ -21,9 +23,4 @@ for( i in 1:1000 ){
     netXOR1padrao = emf.rna.forward( netXOR1padrao )
     print(netXOR1padrao$ET)
 }
-
-
-padrao =1
-
-netXOR1padrao = emf.rna.backward2( rna = netXOR1padrao, padrao =1, alpha = 0.5);
-netXOR1padrao = emf.rna.backward2( rna = netXOR1padrao, padrao =2, alpha = 0.5);
+rm(i, n)

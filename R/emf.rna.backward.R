@@ -51,7 +51,6 @@ emf.rna.backward <- function (
 #     }
 
 
-
     #3 Atualiza A e B
     if(camada2){
         rna$B0 = matrix( bnew[,1], nrow = nrow(bnew) );
