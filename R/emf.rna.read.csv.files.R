@@ -42,12 +42,14 @@ emf.rna.read.csv.files <- function(
     #Define pesos iniciais aleatórios (3 camadas)
     rede$A = runif(rede$info$qtIn * rede$info$qtHid, min = -1, max = 1)
     rede$A = matrix( data = rede$A, ncol = rede$info$qtIn, nrow = rede$info$qtHid)
-    rede$A0 = matrix(data = 0, ncol = 1, nrow = rede$info$qtHid) #Peso BIAS
+    rede$A0 = runif(rede$info$qtHid, min = -1, max = 1)
+    rede$A0 = matrix(data = rede$A0, ncol = 1, nrow = rede$info$qtHid) #Peso BIAS
 
     #Define pesos iniciais aleatórios (3 camadas)
     rede$B = runif(rede$info$qtHid * rede$info$qtOut, min = -1, max = 1)
     rede$B = matrix( data = rede$B, ncol = rede$info$qtHid, nrow = rede$info$qtOut)
-    rede$B0 = matrix(data = 0, ncol = 1, nrow = rede$info$qtOut) #Peso BIAS
+    rede$B0 = runif(rede$info$qtOut, min = -1, max = 1)
+    rede$B0 = matrix(data = rede$B0, ncol = 1, nrow = rede$info$qtOut) #Peso BIAS
 
     #Define as funcoes
     rede$func1 = func1;

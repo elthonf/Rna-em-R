@@ -61,5 +61,8 @@ emf.rna.backward <- function (
         rna$A0 = matrix( anew[,1], nrow = nrow(anew) );
         rna$A  = matrix( anew[,2:dim(anew)[2]], nrow = nrow(anew) );
     }
-    return ( rna );
+
+
+    rna_ret = emf.rna.forward( rna );
+    return ( rna_ret );
 }
