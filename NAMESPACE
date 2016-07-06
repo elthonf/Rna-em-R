@@ -17,6 +17,7 @@ export(
     emf.rna.func.tanh,
     emf.rna.func.tanh.der,
 
-    emf.rna.image.plot
+    emf.rna.image.plot,
+    emf.rna.var.to.label
 
 )
