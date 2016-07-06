@@ -1,12 +1,12 @@
 emf.rna.backward2 <- function (
     rna,
-    padrao, #Registro, de 1 a N
+    padrao, #Registro, de 1 a N, padrao a padrao
     alpha = 0.1,
     camada1 = TRUE,
     camada2 = TRUE
 )
 {
-    En = E[padrao];
+    E = rna$E[padrao];
 
     Z = cbind(1, rna$Z);
     X = cbind(1, rna$X);
@@ -28,8 +28,7 @@ emf.rna.backward2 <- function (
 
     for(i in 1:(rna$info$qtIn+1)){
         for(h in 1:rna$info$qtHid){
-            dEda[h,i] = sum(E[padrao] * rna$func2der(rna$Yin[padrao,,drop = FALSE]) * rna$B[,h, drop = FALSE])
-                * rna$func1der(rna$Zin[padrao,h,drop=FALSE]) * X[padrao,i];
+            dEda[h,i] = sum(E[padrao] * rna$func2der(rna$Yin[padrao,,drop = FALSE]) * rna$B[,h, drop = FALSE]) * rna$func1der(rna$Zin[padrao,h,drop=FALSE]) * X[padrao,i];
             anew[h,i] = A[h,i] - alpha * dEda[h,i];
         }
     }

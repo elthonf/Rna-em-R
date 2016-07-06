@@ -1,4 +1,7 @@
 emf.rna.read.csv.files <- function(
+    qtIn,
+    qtHid,
+    qtOut,
     X, xfile,
     YD, yfile,
     A, afile, B, bfile,
@@ -25,8 +28,16 @@ emf.rna.read.csv.files <- function(
 
     ################
 
-    rede$info = emf.rna.generate.info(rede);
+    rede$info = list();
 
+    rede$info$records = dim(rede$X)[1]         #Quantidade de registros de treino
+    rede$info$qtIn = qtIn                      #Quantidade de entradas (X)
+    rede$info$qtHid = qtHid                    #Quantidade na camada escondida (Z)
+    rede$info$qtOut = qtOut                    #Quantidade de saídas (Y)
+
+    if(!is.null(rede$YD)){
+        rede$info$labels = unique(rede$YD)          #Quantidade de neuronios de saída. 1 para cada label.
+    }
 
     #Define pesos iniciais aleatórios (3 camadas)
     rede$A = runif(rede$info$qtIn * rede$info$qtHid, min = -1, max = 1)

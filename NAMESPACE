@@ -3,6 +3,7 @@ exportPattern("^[[:alpha:]]+")
 export(
     emf.rna.forward,
     emf.rna.backward,
+    emf.rna.backward2,
     emf.rna.backward.padrao,
 
     emf.rna.read.csv.files,
