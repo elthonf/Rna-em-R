@@ -44,6 +44,13 @@ emf.rna.read.csv.files <- function(
         dimnames(rede$YD) <- NULL;
     }
 
+    #Define as funcoes
+    rede$func1 = func1;
+    rede$func1der = func1der;
+    rede$func2 = func2;
+    rede$func2der = func2der;
+
+    rede$dynamic = list(); #Local onde ficam armazenados os dados dinâmicos da rede (Z, Y, Erros e pesos)
 
     #Seta pesos A (1a. camada) e B (2a. camada)
     if(!is.null(afile)){                 #Le arquivo de A
@@ -58,8 +65,8 @@ emf.rna.read.csv.files <- function(
     if(!is.null(A)){                     #Seta A , seja direto ou previamente gerado
         if(!is.matrix(A))
             stop("A deve ser uma matrix.");
-        rede$A0 = A[,1, drop=FALSE]; #Peso BIAS
-        rede$A = A[,2:dim(A)[2], drop=FALSE];
+        rede$dynamic$A0 = A[,1, drop=FALSE]; #Peso BIAS
+        rede$dynamic$A = A[,2:dim(A)[2], drop=FALSE];
     }
 
     #Seta pesos B (1a. camada) e B (2a. camada)
@@ -75,16 +82,9 @@ emf.rna.read.csv.files <- function(
     if(!is.null(B)){                     #Seta B , seja direto ou previamente gerado
         if(!is.matrix(B))
             stop("B deve ser uma matrix.");
-        rede$B0 = B[,1, drop=FALSE]; #Peso BIAS
-        rede$B = B[,2:dim(B)[2], drop=FALSE];
+        rede$dynamic$B0 = B[,1, drop=FALSE]; #Peso BIAS
+        rede$dynamic$B = B[,2:dim(B)[2], drop=FALSE];
     }
-
-    #Define as funcoes
-    rede$func1 = func1;
-    rede$func1der = func1der;
-    rede$func2 = func2;
-    rede$func2der = func2der;
-
     return (rede);
 
 }
