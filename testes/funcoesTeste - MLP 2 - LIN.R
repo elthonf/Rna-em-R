@@ -119,11 +119,27 @@ for( k in 4 : 4){
 
 
 
-#####
+##### ##### ##### ##### ##### ##### ##### #####
 
 testeMLP = emf.rna.read.csv.files(
     cenario = "TRE 01", qtIn = 4, qtHid = 4, qtOut = 1,
     X = as.matrix( VARIACOES[1:41, c("SPX", "MXX", "IPSA", "MERV")] ), #Define datas e bolsas (entre dias 01-abr-2016 e 31-mai-2016!)
     YD = as.matrix( VARIACOES[2:42, c("BVSP")] ),
-    fu
+    func1 = emf.rna.func.tanh, func1der = emf.rna.func.tanh.der,
+    func2 = emf.rna.func.tunnel, func2der = emf.rna.func.tunnel.der
     )
+
+
+testeMLPF = emf.rna.forward(testeMLP)
+
+
+testeMLPB = testeMLPF
+alpha = 0.5
+for( i in 1 : 1000000){
+    testeMLPB = emf.rna.backward(rna = testeMLPB, alpha = alpha)
+    corretos = which(emf.rna.var.to.label(cbind(testeMLPB$YD)) == emf.rna.var.to.label(cbind(testeMLPB$Y)))
+    if(i%%100 == 0) cat("[", testeMLPB$cenario, "]", "Iter:", i, "Erro:", testeMLPB$ET, ", Acurácia: ", length(corretos) / length(testeMLPB$Y) * 100.0, "%", "Alfa:", alpha, "\n")
+}
+
+corretos = which(emf.rna.var.to.label(cbind(testeMLPB$YD)) == emf.rna.var.to.label(cbind(testeMLPB$Y)))
+cat("[", testeMLPB$cenario, "]", "Erro: ", testeMLPB$ET, ", Acurácia: ", length(corretos) / length(testeMLPB$Y) * 100.0, "%", "\n")
