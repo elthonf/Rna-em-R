@@ -21,8 +21,10 @@ getCotacao <- function(stock){
 }
 
 
-########  Cria BVSP
+########  1 - Cria BVSP
 bvsp = getCotacao ( "BVSP")
+
+########  2 - Cria Maiores variacoes do BVSP
 
 #bvsp$D1d = NA; bvsp$D2d = NA; bvsp$D7d = NA; bvsp$D30d = NA;
 bvsp$D1c = NA; bvsp$D2c = NA; bvsp$D7c = NA; bvsp$D30c = NA;
@@ -42,6 +44,8 @@ bvsp$D30v = (bvsp$D30c - bvsp$Adj.Close ) / bvsp$Adj.Close * 100
 
 stock = stocks[1]
 
+########  3 - Adiciona demais bolsas e variacoes
+
 for(stock in stocks){
     bvsp[,stock] = NA
     tabStocks = getCotacao(stock)
@@ -54,5 +58,6 @@ for(stock in stocks){
 }
 rm(a, i, stock, tabStocks)
 
+########  4 - Salva em arquivo
 
-write.csv(file = "cotacoes.csv", x = bvsp)
+write.csv(file = "dados/cotacoes.csv", x = bvsp)

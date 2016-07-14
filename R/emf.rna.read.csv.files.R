@@ -1,5 +1,6 @@
 emf.rna.read.csv.files <- function(
     qtIn,
+    qtRec = 0, #Quantidade de recorrências (Delays) a ser adicionada como entradas
     qtHid,
     qtOut,
 
@@ -17,6 +18,7 @@ emf.rna.read.csv.files <- function(
     rede$info = list();
     rede$cenario = cenario;
     rede$info$qtIn = qtIn                      #Quantidade de entradas (X)
+    rede$info$qtRec = qtRec                    #Quantidade de recorrências EXTERNAS (Na entrada, X)
     rede$info$qtHid = qtHid                    #Quantidade na camada escondida (Z)
     rede$info$qtOut = qtOut                    #Quantidade de saídas (Y)
 
@@ -69,7 +71,7 @@ emf.rna.read.csv.files <- function(
         rede$dynamic$A = A[,2:dim(A)[2], drop=FALSE];
     }
 
-    #Seta pesos B (1a. camada) e B (2a. camada)
+    #Seta pesos B (2a. camada)
     if(!is.null(bfile)){                 #Le arquivo de B
         B = read.csv(bfile, header = FALSE); #x = x[,200:210]
         B = data.matrix(B);
@@ -85,6 +87,25 @@ emf.rna.read.csv.files <- function(
         rede$dynamic$B0 = B[,1, drop=FALSE]; #Peso BIAS
         rede$dynamic$B = B[,2:dim(B)[2], drop=FALSE];
     }
+
+    #Seta pesos C (recorrência da 1ª Camada) e gera camada R vazia (zeros).
+    if(qtRec > 0){
+        R = matrix( data = 0, ncol = rede$info$qtRec * rede$info$qtOut, nrow = dim(rede$X)[1]);
+        rede$dynamic$R = R;
+
+        C = runif( (rede$info$qtRec * rede$info$qtOut) * rede$info$qtHid, min = -1, max = 1);
+        C = matrix( data = C, ncol = (rede$info$qtRec * rede$info$qtOut), nrow = rede$info$qtHid);
+        rede$dynamic$C = C;
+    }
+
+    #Define memória para ativação e erros (Zin, Z, Yin, Y, e e E)
+    rede$dynamic$Zin = matrix(data = NA, nrow = dim(rede$X)[1], ncol = qtHid);
+    rede$dynamic$Z = matrix(data = NA, nrow = dim(rede$X)[1], ncol = qtHid);
+    rede$dynamic$Yin = matrix(data = NA, nrow = dim(rede$X)[1], ncol = qtOut);
+    rede$dynamic$Y = matrix(data = NA, nrow = dim(rede$X)[1], ncol = qtOut);
+    rede$dynamic$e = matrix(data = NA, nrow = dim(rede$X)[1], ncol = qtOut);
+    rede$dynamic$E = rep(x = NA, dim(rede$X)[1]);
+
     return (rede);
 
 }

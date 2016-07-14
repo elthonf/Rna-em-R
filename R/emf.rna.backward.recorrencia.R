@@ -1,15 +1,12 @@
-emf.rna.backward2 <- function (
+emf.rna.backward.recorrencia <- function (
     rna,
-    padrao = NULL, #Registro, ou colecao de 1 a N, padrao a padrao
     alpha.min = 0.1,
     alpha.max = 0.9,
     camada1 = TRUE,
     camada2 = TRUE
 )
 {
-    if(is.null(padrao)){ #Se nao passou o padrao, faz todos
-        padrao = 1 : dim(rna$X)[1]
-    }
+    padrao = 1 : dim(rna$X)[1]; #Com recorrência, sempre faz todos os padrões.
 
     for(pad in padrao){
         alpha = runif(n = 1, min = alpha.min, max = alpha.max)
@@ -18,8 +15,8 @@ emf.rna.backward2 <- function (
         e = rna$dynamic$e;
 
         Z = cbind(1, rna$dynamic$Z); #ADD Bias
-        X = cbind(1, rna$X); #ADD Bias
-        A = cbind(rna$dynamic$A0, rna$dynamic$A); #ADD Peso do Bias
+        X = cbind(1, rna$X, rna$dynamic$R); #ADD Bias e recorrencia externa
+        A = cbind(rna$dynamic$A0, rna$dynamic$A, rna$dynamic$C); #ADD Peso do Bias e da recorrencia externa
         B = cbind(rna$dynamic$B0, rna$dynamic$B); #ADD Peso do Bias
 
 
@@ -35,11 +32,11 @@ emf.rna.backward2 <- function (
             }
         }
 
-        dEda = matrix(data=0, nrow = rna$info$qtHid, ncol = rna$info$qtIn+1);
-        anew = matrix(nrow = rna$info$qtHid, ncol = rna$info$qtIn+1);
+        dEda = matrix(data=0, nrow = rna$info$qtHid, ncol = (rna$info$qtIn + rna$info$qtRec + 1));
+        anew = matrix(nrow = rna$info$qtHid, ncol = (rna$info$qtIn + rna$info$qtRec + 1));
         if(is.null(rna$dynamic$dEda)) rna$dynamic$dEda = dEda; #Ultima atualizacao
 
-        for(i in 1:(rna$info$qtIn+1)){
+        for(i in 1:(rna$info$qtIn + rna$info$qtRec + 1)){
             for(h in 1:rna$info$qtHid){
                 #o = 1; #temporario
                 dEda[h,i] = sum( e[pad, ] * rna$func2der(rna$dynamic$Yin[pad, ]) * rna$dynamic$B[ ,h]) * rna$func1der(rna$dynamic$Zin[pad,h]) * X[pad,i];
@@ -50,16 +47,20 @@ emf.rna.backward2 <- function (
 
         #3 Atualiza A e B
         if(camada2){
-            rna$dynamic$B  = bnew[,2:dim(bnew)[2], drop=FALSE];
             rna$dynamic$B0 = bnew[,1, drop=FALSE];
+            rna$dynamic$B  = bnew[,2:dim(bnew)[2], drop=FALSE];
         }
         if(camada1){
-            rna$dynamic$A  = anew[,2:dim(anew)[2], drop=FALSE];
             rna$dynamic$A0 = anew[,1, drop=FALSE];
+            rna$dynamic$A  = anew[,2:(rna$info$qtIn+1), drop=FALSE];
+            rna$dynamic$C  = anew[,(rna$info$qtIn+2):dim(anew)[2], drop=FALSE];
         }
 
-        rna$dynamic = emf.rna.forward( rna );
+        #Atualiza o erros para usar no próximo padrão.
+        rna$dynamic = emf.rna.forward.padrao( rna, padrao = pad );
     }
+
+
 
     return ( rna$dynamic );
 }

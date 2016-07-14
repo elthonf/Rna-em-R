@@ -1,4 +1,4 @@
-emf.rna.backward <- function (
+emf.rna.backward.lote <- function (
     rna, alpha = 1,
     camada1 = TRUE,
     camada2 = TRUE

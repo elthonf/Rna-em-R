@@ -5,6 +5,11 @@ emf.rna.forward <- function (
     #1 - Processa Zin e Z
     X = cbind(1, rna$X);
     A = cbind(rna$dynamic$A0, rna$dynamic$A);
+
+    if(rna$info$qtRec > 0){
+        stop("Para problemas com recorrência, utilize o método padrão a padrão: emf.rna.forward.padrao");
+    }
+
     rna$dynamic$Zin = X %*% t(A);
     rna$dynamic$Z = rna$func1(rna$dynamic$Zin);
 
