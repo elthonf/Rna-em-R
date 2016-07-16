@@ -61,14 +61,15 @@ emf.rna.read.csv.files <- function(
         dimnames(A) <- NULL;
     }
     if(is.null(afile) && is.null(A)){   #Gera aleatório
-        A = runif((rede$info$qtIn+1) * rede$info$qtHid, min = -1, max = 1)
-        A = matrix( data = A, ncol = (rede$info$qtIn+1), nrow = rede$info$qtHid)
+        A = runif((rede$info$qtIn+1+rede$info$qtRec) * rede$info$qtHid, min = -1, max = 1)
+        A = matrix( data = A, ncol = (rede$info$qtIn+1+rede$info$qtRec), nrow = rede$info$qtHid)
     }
     if(!is.null(A)){                     #Seta A , seja direto ou previamente gerado
         if(!is.matrix(A))
             stop("A deve ser uma matrix.");
         rede$dynamic$A0 = A[,1, drop=FALSE]; #Peso BIAS
-        rede$dynamic$A = A[,2:dim(A)[2], drop=FALSE];
+        rede$dynamic$A = A[,2:(rede$info$qtIn+1), drop=FALSE];
+        rede$dynamic$C = A[,(rede$info$qtIn+2):(rede$info$qtIn+1+rede$info$qtRec), drop=FALSE]; #Recorrencia!
     }
 
     #Seta pesos B (2a. camada)
@@ -88,14 +89,10 @@ emf.rna.read.csv.files <- function(
         rede$dynamic$B = B[,2:dim(B)[2], drop=FALSE];
     }
 
-    #Seta pesos C (recorrência da 1ª Camada) e gera camada R vazia (zeros).
+    #Recorrencia: Gera camada R vazia (zeros).
     if(qtRec > 0){
         R = matrix( data = 0, ncol = rede$info$qtRec * rede$info$qtOut, nrow = dim(rede$X)[1]);
         rede$dynamic$R = R;
-
-        C = runif( (rede$info$qtRec * rede$info$qtOut) * rede$info$qtHid, min = -1, max = 1);
-        C = matrix( data = C, ncol = (rede$info$qtRec * rede$info$qtOut), nrow = rede$info$qtHid);
-        rede$dynamic$C = C;
     }
 
     #Define memória para ativação e erros (Zin, Z, Yin, Y, e e E)

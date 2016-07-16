@@ -63,7 +63,7 @@ execCenario <- function (idCenario){
     print("Início treinamento.")
     #LOOP de treinamento
     alpha.min = 0.1;
-    alpha.max = 0.1;
+    alpha.max = 0.3;
     for(i in 1:1000){
         lastET = treina.rede[[idCenario]]$dynamic$ET;
         treina.rede[[idCenario]]$dynamic = emf.rna.backward.padrao(rna = treina.rede[[idCenario]], alpha.min = alpha.min, alpha.max = alpha.max);
