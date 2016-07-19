@@ -39,7 +39,7 @@ logExec <- function( i, rede ){
     if(i%%100 == 0) cat("[", rede$cenario, "]", "Iter:", i, "Erro:", rede$dynamic$ET, ", Acurácia: ", length(corretos) / length(rede$YD) * 100.0, "%", "\n")
 }
 
-
+idCenario = 1
 
 execCenario <- function (idCenario){
     #Cria a rede de treinamento

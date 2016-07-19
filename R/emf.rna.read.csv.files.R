@@ -69,7 +69,8 @@ emf.rna.read.csv.files <- function(
             stop("A deve ser uma matrix.");
         rede$dynamic$A0 = A[,1, drop=FALSE]; #Peso BIAS
         rede$dynamic$A = A[,2:(rede$info$qtIn+1), drop=FALSE];
-        rede$dynamic$C = A[,(rede$info$qtIn+2):(rede$info$qtIn+1+rede$info$qtRec), drop=FALSE]; #Recorrencia!
+        if(qtRec > 0)
+            rede$dynamic$C = A[,(rede$info$qtIn+2):(rede$info$qtIn+1+rede$info$qtRec), drop=FALSE]; #Recorrencia!
     }
 
     #Seta pesos B (2a. camada)

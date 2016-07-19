@@ -8,7 +8,7 @@ COTACOES[,20:32 ][is.na(COTACOES[,20:32 ])] = 0.0   #Transforma NA´S em Zeros
 #Dados entre 81 e 123 para validacao (entre 2016-05-02 e 2016-06-30 : 2 meses )
 ########## ########## ########## ########## ########## ##########
 treina.X = list(); treina.Y = list(); valida.X = list(); valida.Y = list(); treina.rede = list();  valida.rede = list();
-qtde.neuronios = c( 2, 3, 4, 5, 5, 5, 5, 10, 2, 3, 4, 5, 5, 5, 5, 3, 5, 5, 5, 5, 3, 5, 5, 5, 5 )
+qtde.neuronios = c( 4, 3, 4, 5, 5, 5, 5, 10, 2, 3, 4, 5, 5, 5, 5, 3, 5, 5, 5, 5, 3, 5, 5, 5, 5 )
 
 #Cenário 1
 treina.X[[1]] = cbind( COTACOES[1:79, "Var"], COTACOES[2:80, "Var"])
@@ -66,8 +66,8 @@ execCenario <- function (idCenario){
 
     print("Início treinamento.")
     #LOOP de treinamento
-    for(i in 1:1000){
-        treina.rede[[idCenario]]$dynamic = emf.rna.backward.recorrencia(rna = treina.rede[[idCenario]], alpha.min = 0.0001, alpha.max = 0.001);
+    for(i in 1:10000){
+        treina.rede[[idCenario]]$dynamic = emf.rna.backward.recorrencia(rna = treina.rede[[idCenario]], alpha.min = 0.01, alpha.max = 0.01);
         logExec( i, treina.rede[[idCenario]] );
     }
 
