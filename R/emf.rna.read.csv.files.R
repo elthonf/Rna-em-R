@@ -61,7 +61,7 @@ emf.rna.read.csv.files <- function(
         dimnames(A) <- NULL;
     }
     if(is.null(afile) && is.null(A)){   #Gera aleatório
-        A = runif((rede$info$qtIn+1+rede$info$qtRec) * rede$info$qtHid, min = -1, max = 1)
+        A = emf.rna.runif((rede$info$qtIn+1+rede$info$qtRec) * rede$info$qtHid, min = -1, max = 1)
         A = matrix( data = A, ncol = (rede$info$qtIn+1+rede$info$qtRec), nrow = rede$info$qtHid)
     }
     if(!is.null(A)){                     #Seta A , seja direto ou previamente gerado
@@ -80,7 +80,7 @@ emf.rna.read.csv.files <- function(
         dimnames(B) <- NULL;
     }
     if(is.null(bfile) && is.null(B)){   #Gera aleatório
-        B = runif((rede$info$qtHid+1) * rede$info$qtOut, min = -1, max = 1)
+        B = emf.rna.runif((rede$info$qtHid+1) * rede$info$qtOut, min = -1, max = 1)
         B = matrix( data = B, ncol = (rede$info$qtHid+1), nrow = rede$info$qtOut)
     }
     if(!is.null(B)){                     #Seta B , seja direto ou previamente gerado

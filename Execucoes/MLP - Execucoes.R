@@ -190,12 +190,12 @@ execCenario <- function (idCenario){
     #LOOP de treinamento
     alpha.min = 0.1;
     alpha.max = 0.1;
-    for(i in 1:6000){
-        if(i == 2000){ #Diminui o Alfa após algumas execucoes
+    for(i in 1:10000){
+        if(i == 3000){ #Diminui o Alfa após algumas execucoes
             alpha.min = 0.05;
             alpha.max = 0.05;
         }
-        if(i == 4000){ #Diminui o Alfa após algumas execucoes
+        if(i == 6000){ #Diminui o Alfa após algumas execucoes
             alpha.min = 0.03;
             alpha.max = 0.03;
         }

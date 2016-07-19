@@ -8,6 +8,7 @@ export(
     emf.rna.backward.recorrencia,
 
     emf.rna.read.csv.files,
+    emf.rna.runif,
 
     emf.rna.func.sigmoid,
     emf.rna.func.sigmoid.der,
