@@ -37,6 +37,16 @@ valida.Y[[4]] = COTACOES[83:123, "D1v"]
 logExec <- function( i, rede ){
     corretos = which(emf.rna.var.to.label(cbind(rede$YD)) == emf.rna.var.to.label(cbind(rede$dynamic$Y)))
     if(i%%100 == 0) cat("[", rede$cenario, "]", "Iter:", i, "Erro:", rede$dynamic$ET, ", Acurácia: ", length(corretos) / length(rede$YD) * 100.0, "%", "\n")
+    if(!exists("log.data")){
+        log.data = list()
+    }
+
+    log.data$hora = c(log.data$hora, Sys.time())
+    if(length(log.data$hora)==1) class(log.data$hora) = class(Sys.time())
+    log.data$cenario = c(log.data$cenario, rede$cenario)
+    log.data$iteracao = c(log.data$iteracao, i)
+    log.data$ET = c(log.data$ET, rede$dynamic$ET)
+    log.data$acuracia = c(log.data$acuracia,length(corretos) / length(rede$YD) )
 }
 
 idCenario = 1
