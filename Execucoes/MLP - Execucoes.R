@@ -165,7 +165,7 @@ logExec <- function( i, rede){
 
 }
 
-#idCenario = 1
+#idCenario = 1 #Seta para testes
 
 execCenario <- function (idCenario){
     #Cria a rede de treinamento
@@ -186,6 +186,18 @@ execCenario <- function (idCenario){
     print("Início rede.")
     logExec( 0, treina.rede[[idCenario]] );
 
+    #Valida Inicial
+    valida.rede[[idCenario]]$dynamic$A0 = treina.rede[[idCenario]]$dynamic$A0;
+    valida.rede[[idCenario]]$dynamic$B0 = treina.rede[[idCenario]]$dynamic$B0;
+    valida.rede[[idCenario]]$dynamic$A = treina.rede[[idCenario]]$dynamic$A;
+    valida.rede[[idCenario]]$dynamic$B = treina.rede[[idCenario]]$dynamic$B;
+
+    #Executa Validacao
+    valida.rede[[idCenario]]$dynamic = emf.rna.forward(valida.rede[[idCenario]]);
+    logExec( 0, valida.rede[[idCenario]] );
+
+
+
     print("Início treinamento.")
     #LOOP de treinamento
     alpha.min = 0.1;
@@ -202,27 +214,37 @@ execCenario <- function (idCenario){
         lastET = treina.rede[[idCenario]]$dynamic$ET;
         treina.rede[[idCenario]]$dynamic = emf.rna.backward.padrao(rna = treina.rede[[idCenario]], alpha.min = alpha.min, alpha.max = alpha.max);
         logExec( i, treina.rede[[idCenario]] );
+
+        #Copia pesos para rede de validacao
+        valida.rede[[idCenario]]$dynamic$A0 = treina.rede[[idCenario]]$dynamic$A0;
+        valida.rede[[idCenario]]$dynamic$B0 = treina.rede[[idCenario]]$dynamic$B0;
+        valida.rede[[idCenario]]$dynamic$A = treina.rede[[idCenario]]$dynamic$A;
+        valida.rede[[idCenario]]$dynamic$B = treina.rede[[idCenario]]$dynamic$B;
+
+        #Executa Validacao
+        valida.rede[[idCenario]]$dynamic = emf.rna.forward(valida.rede[[idCenario]]);
+        logExec( i, valida.rede[[idCenario]] );
+
     }
-
-    #Copia pesos para rede de validacao
-    valida.rede[[idCenario]]$dynamic$A0 = treina.rede[[idCenario]]$dynamic$A0;
-    valida.rede[[idCenario]]$dynamic$B0 = treina.rede[[idCenario]]$dynamic$B0;
-    valida.rede[[idCenario]]$dynamic$A = treina.rede[[idCenario]]$dynamic$A;
-    valida.rede[[idCenario]]$dynamic$B = treina.rede[[idCenario]]$dynamic$B;
-
-    #Executa Validacao
-    valida.rede[[idCenario]]$dynamic = emf.rna.forward(valida.rede[[idCenario]]);
-    logExec( 0, valida.rede[[idCenario]] );
 }
 
 
 for(i in 1:25){
     execCenario(i)
 }
-
+rm(i)
 #execCenario(1)
 #execCenario(2)
 #execCenario(3)
 #execCenario(4)
 
-View( data.frame(log.data) )
+log.tab = data.frame(log.data)
+log.resumo = rbind(  log.tab[(log.tab$iteracao==00000) ,] , log.tab[(log.tab$iteracao==10000) ,] )
+
+write.csv( x = log.tab, file = "dados/MLP.log.tab.csv" )
+write.csv( x = log.resumo, file = "dados/MLP.log.resumo.csv" )
+
+View( log.resumo )
+save.image("dados/MLP Exec.RData")
+
+
