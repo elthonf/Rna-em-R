@@ -1,0 +1,19 @@
+Pasta “dados” possui:
+- Os arquivos de leitura .csv
+- Os arquivos de log .csv
+- Os arquivos .Rdata com detalhes das execuções
+
+Pasta “R” possui:
+- Os arquivos genéricos de rna. O pacote tem que ser “buildado” para correto funcionamento.
+
+Pasta “man” possui:
+- Manual das funções genéricas.
+
+Pasta “Execucoes” possui:
+- Script de execução da rede MLP
+- Script de execução da rede com Recorrência externa
+
+Pasta “testes” possui:
+- Scripts auxiliares para plotagem
+- Scripts auxiliares para gerações de csv
+- Scripts para análise dos dados
