@@ -16,10 +16,10 @@ emf.rna.backward.recorrencia <- function (
     Z = cbind(1, rna$dynamic$Z); #ADD Bias
     X = cbind(1, rna$X, rna$dynamic$R); #ADD Bias e recorrencia externa
 
-
+    dYdb = array(data=0, dim =  c(rna$info$qtOut, rna$info$qtHid+1, dim(rna$X)[1])); #Cria array de 3 DIMENSÕES!!!
     #Atualiza dYdb
     for(pad in padrao){
-        dYdb = array(data=0, dim =  c(rna$info$qtOut, rna$info$qtHid+1, dim(rna$X)[1])); #Cria array de 3 DIMENSÕES!!!
+        #dYdb = array(data=0, dim =  c(rna$info$qtOut, rna$info$qtHid+1, dim(rna$X)[1])); #Cria array de 3 DIMENSÕES!!!
         #Variaveis a usar na recorrencia!
         padMax = max(0, pad - 1);
         padMin = max(ifelse(padMax ==0, 0, 1), pad - rna$info$qtRec);

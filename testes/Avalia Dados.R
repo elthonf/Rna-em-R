@@ -33,7 +33,7 @@ exibegrafico = 16:20 #1 semana
 exibegrafico = 21:25 #1 mês
 
 matplot(log.grafico.frame[,exibegrafico], type = c("l"),pch=1,col = exibegrafico, ylab = "") #plot
-legend("topright", legend = nomes.treina[exibegrafico], col=exibegrafico, pch=1, title = "1 mês") # optional legend
+legend("topright", legend = nomes.treina[exibegrafico], col=exibegrafico, pch=1, title = "1 semana") # optional legend
 
 
 matplot(log.grafico.frame[,1:8], type = c("l"),pch=1,col = 1:8, ylab = "") #plot
@@ -51,6 +51,6 @@ rm(log.resumo.treina, log.resumo.valida)
 
 write.csv(x = log.resumo.final, file="dados/MLP.log.artigo.csv")
 #OU:
-write.csv(x = log.resumo.final, file="dados/Externa.log.artigo.csv")
+write.csv(x = log.resumo.final, file="dados/RecExt.log.artigo.csv")
 
 View(log.resumo.final)
